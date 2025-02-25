@@ -15,7 +15,7 @@ export const normalToast = () => {
 
 export const WarningToast = ({ warning }: { warning: any }) => {
     React.useEffect(() => {
-        const promise = () => new Promise((resolve) => setTimeout(() => resolve({ name: 'Sonner' }), 1000));
+        const promise = () => new Promise((resolve) => setTimeout(() => resolve({ name: 'Sonner' }), 100));
         toast.promise(promise, {
             loading: 'Loading...',
             success: (data) => {
