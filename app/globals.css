@@ -143,12 +143,12 @@
   }
 
   .greeting_text span:nth-child(4) {
-    margin-right: 8px;
+    margin-right: 14px;
   }
 
   .greeting_image {
     opacity: 0;
-    animation: smoke_image 5.5s forwards;
+    animation: smoke_image 6s forwards;
   }
 
   @keyframes smoke_image {
