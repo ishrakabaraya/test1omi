@@ -150,7 +150,7 @@
 
   .greeting_image {
     opacity: 0;
-    animation-delay: 8s;
+    animation-delay: 10s;
     animation: smoke_image 5s forwards;
   }
 
