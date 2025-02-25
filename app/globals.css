@@ -148,7 +148,7 @@
 
   .greeting_image {
     opacity: 0;
-    animation: smoke_image 3s forwards;
+    animation: smoke_image 5s forwards;
   }
 
   @keyframes smoke_image {
