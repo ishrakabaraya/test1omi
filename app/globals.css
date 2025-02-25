@@ -131,8 +131,6 @@
     display: block;
     left: 50%;
     transform: translateX(calc(-50% + 20px)) translateY(-50px);
-    transition: 10s;
-    animation: smoke_container 7s forwards;
   }
 
 
@@ -150,8 +148,7 @@
 
   .greeting_image {
     opacity: 0;
-    animation-delay: 10s;
-    animation: smoke_image 5s forwards;
+    animation: smoke_image 3s forwards;
   }
 
   @keyframes smoke_image {
@@ -167,19 +164,11 @@
 
     100% {
       opacity: 1;
-      filter: blur(1px);
+      filter: blur(5px);
     }
   }
 
-  @keyframes smoke_container {
-    0% {
-      transform: translateY(50px) translateX(-20px);
-    }
 
-    100% {
-      transform: translateY(0px) translateX(-20px);
-    }
-  }
 
   @keyframes smoke {
     0% {}
