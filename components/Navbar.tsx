@@ -24,11 +24,11 @@ const Navbar = async () => {
     return (
         <>
             <header>
-                <nav className='flex justify-between items-center bg-white text-black relative shadow-sm font-mono p-3' role='navigation'>
+                <nav className='flex justify-between items-center  text-white relative shadow-sm font-mono p-3 bg-[#121619]  mb-5' role='navigation ' >
 
 
                     {!session ? (
-                        <>
+                        <div className='z-10'>
 
                             <SigninClient />
                             <form action={
@@ -41,7 +41,7 @@ const Navbar = async () => {
                                 <button type='submit'>
 
                                 </button>                         </form>
-                        </>
+                        </div>
 
                     ) : (
                         <>
@@ -49,7 +49,7 @@ const Navbar = async () => {
 
                             <Popover>
                                 <PopoverTrigger>
-                                    <Avatar>
+                                    <Avatar className='text-black z-10'>
                                         <AvatarImage src={image || "https://lh3.googleusercontent.com/a/ACg8ocJZ2mp_oLz-iIFQqLXHima3C3K0iFQUvo0QhLzoxk3dx5RGKRU=s96-c"}
                                             alt={name || ""} />
                                         <AvatarFallback>{name || "user"}</AvatarFallback>
@@ -76,8 +76,8 @@ const Navbar = async () => {
 
 
 
-                            <Suspense fallback={<Skeleton className=' bg-slate-400 w-full h-3  mx-6' />}>
-                                <div className='flex justify-between mx-3'>
+                            <Suspense fallback={<Skeleton className=' bg-slate-400 w-10 h-3  mx-6' />}>
+                                <div className='flex justify-between mx-3 z-10'>
                                     {name || "user"}
                                     <Wallet email={email || ""} />
                                 </div>

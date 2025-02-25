@@ -124,4 +124,74 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  .greeting_text {
+    position: absolute;
+    color: white;
+    display: block;
+    left: 50%;
+    transform: translateX(calc(-50% + 20px)) translateY(-50px);
+    transition: 10s;
+    animation: smoke_container 7s forwards;
+  }
+
+
+  .greeting_text span {
+    display: inline-block;
+    animation: smoke 2s forwards;
+    animation-delay: calc(var(--i)*0.1s);
+    filter: blur(10px);
+    opacity: 0;
+  }
+
+  .greeting_text span:nth-child(4) {
+    margin-right: 8px;
+  }
+
+  .greeting_image {
+    opacity: 0;
+    animation-delay: 8s;
+    animation: smoke_image 5s forwards;
+  }
+
+  @keyframes smoke_image {
+    0% {
+      opacity: 0;
+      filter: blur(10px);
+    }
+
+    50% {
+      opacity: 0;
+      filter: blur(10px);
+    }
+
+    100% {
+      opacity: 1;
+      filter: blur(1px);
+    }
+  }
+
+  @keyframes smoke_container {
+    0% {
+      transform: translateY(50px) translateX(-20px);
+    }
+
+    100% {
+      transform: translateY(0px) translateX(-20px);
+    }
+  }
+
+  @keyframes smoke {
+    0% {}
+
+
+
+    100% {
+      transform: translateY(50px) translateX(-20px);
+      filter: blur(0px);
+      opacity: 1;
+    }
+  }
+
+
 }

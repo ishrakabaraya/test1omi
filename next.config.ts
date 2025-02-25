@@ -10,6 +10,15 @@ const nextConfig: NextConfig = {
     buildActivity: true,
     buildActivityPosition: "bottom-right"
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "ik.imagekit.io",
+        port: "",
+      },
+    ],
+  },
 
 };
 
