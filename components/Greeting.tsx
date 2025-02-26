@@ -9,7 +9,7 @@ const Greeting = () => {
     return (
         <>
 
-            <div className=' m-auto w-full max-w-lg absolute bottom-0 left-1/2 -translate-x-1/2 greeting_image'>
+            <div className=' m-auto w-full max-w-lg fixed bottom-0 left-1/2 -translate-x-1/2 greeting_image'>
                 <IKImage urlEndpoint={urlEndpoint} path="/peaky6_crop.jpg" alt="Greeting image" />
             </div>
             <div className='text-white font-extrabold text-4xl greeting_text'>
