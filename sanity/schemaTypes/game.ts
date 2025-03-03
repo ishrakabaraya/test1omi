@@ -6,37 +6,39 @@ export const room = defineType({
     title: 'Room',
     type: 'document',
     fields: [
-        {
-            name: 'players',
-            title: 'Players',
-            type: 'array',
 
-        },
         {
             name: 'email',
             title: 'Email',
             type: 'string',
             validation: (Rule) => Rule.required(),
         },
+
         {
-            name: 'image',
-            title: 'Image',
-            type: 'url',
-        },
-        {
-            name: 'expires',
-            title: 'Expires',
+            name: 'date',
+            title: 'Date',
             type: 'string',
         },
         {
-            name: 'wallet',
-            title: 'Wallet',
-            type: 'number',
+            name: 'type',
+            title: 'Type',
+            type: 'string',
+        },
+        {
+            name: 'payment',
+            title: 'Payment',
+            type: 'string',
+
+        },
+        {
+            name: 'rounds',
+            title: 'Rounds',
+            type: 'string',
         },
     ],
     preview: {
         select: {
-            title: 'name',
+            title: 'email',
         }
     }
 })

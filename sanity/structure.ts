@@ -6,4 +6,5 @@ export const structure: StructureResolver = (S) =>
     .title('Content')
     .items([
       S.documentTypeListItem('player').title('Players'),
+      S.documentTypeListItem('room').title('Rooms')
     ])
