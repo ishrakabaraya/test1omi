@@ -18,17 +18,17 @@ const AlertComponent = ({ userEmail }: { userEmail: string }) => {
 
     const handleCancelForm = async (prevState: any, formData: FormData) => {
         try {
-            const formValues = {
-                Email_To: formData.get("id") as string,
-                Accept: formData.get("accept") as string,
-            };
+            // const formValues = {
+            //     Email_To: formData.get("id") as string,
+            //     Accept: formData.get("accept") as string,
+            // };
             // console.log(formValues)
 
 
             const result = await RemoveFromBuffer(prevState, formData);
             //console.log(result)
             if (result.status == "SUCCESS") {
-                toast.success('Canceled From Joining')
+                toast.success('Success')
 
             } else {
                 toast.error(result.error || "error")
@@ -63,8 +63,7 @@ const AlertComponent = ({ userEmail }: { userEmail: string }) => {
                         </AlertDialogTitle>
                         <AlertDialogDescription>
 
-                            {userEmail &&
-                                userEmail.slice(0, 5)} wants to join...
+                            {userEmail} wants to join...
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

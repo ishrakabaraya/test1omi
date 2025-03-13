@@ -196,8 +196,8 @@ export const JoinRoom = async (
 export const bufferToChosen = async (email: string) => {
 
 
+    await writeClient.delete({ query: `*[_type == "room" ][0..3]` })
 
-    // await writeClient.delete({ query: `*[_type == "room" ][0..3]` })
 
     const { data: roomLive } = await sanityFetch({
         query: PLAYER_BY_GITHUB_ID_QUERY_ROOM, params: {
@@ -232,13 +232,15 @@ export const bufferToChosen = async (email: string) => {
         if (email_buffer_chosen.chosen) {
             chosen = email_buffer_chosen.chosen
         }
-        const list: String = buffer.map((b: string) => {
+        const list: string = buffer.map((b: string) => {
 
             if (chosen.length < 5 && !chosen.includes(b)) {
 
-                return b + ",";
+                return b;
             }
         })
+        console.log("check list type")
+        console.log(list)
         return list
 
     } else {
@@ -254,6 +256,7 @@ export const bufferToChosen = async (email: string) => {
         }
 
     }
+    return []
 
 }
 
@@ -304,20 +307,20 @@ export const RemoveFromBuffer = async (
 
         await writeClient
             .patch(room)
-            .set({ buffer: buffer.filter((item: string) => item != EmailTo.slice(0, -1)) })
+            .set({ buffer: buffer.filter((item: string) => item != EmailTo) })
             .commit()
         if (Accept == 'true') {
             if (chosen) {
 
                 await writeClient
                     .patch(room)
-                    .set({ chosen: [...chosen, EmailTo.slice(0, -1)] })
+                    .set({ chosen: [...chosen, EmailTo] })
                     .commit()
             }
             else {
                 await writeClient
                     .patch(room)
-                    .set({ chosen: [EmailTo.slice(0, -1)] })
+                    .set({ chosen: [EmailTo] })
                     .commit()
             }
         }

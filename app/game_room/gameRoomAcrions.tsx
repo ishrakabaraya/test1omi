@@ -54,10 +54,10 @@ export const chosenPlayers = async () => {
     console.log("check ")
     console.log(email)
 
-    if (chosenEmails.chosen) {
+    if (chosenEmails && chosenEmails.chosen) {
         chosen = chosenEmails.chosen
     }
-    if (chosen.length > 3) {
+    if (chosenEmails && chosen.length > 3) {
 
         if (chosenEmails.thurumpu) {
             timer(roomLive.room)

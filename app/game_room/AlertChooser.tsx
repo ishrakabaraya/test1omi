@@ -16,7 +16,7 @@ import { Club, Diamond, Heart, Spade } from "lucide-react"
 import { useActionState, useRef } from "react"
 import { toast } from "sonner"
 import { setThurumpu } from "./gameRoomAcrions"
-const AlertChooser = ({ room }: { room: string }) => {
+const AlertChooser = () => {
 
     const handleCancelForm = async (prevState: any, formData: FormData) => {
         try {

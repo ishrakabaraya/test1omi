@@ -47,7 +47,7 @@ const page = async () => {
     if (!session)
         redirect('/')
 
-    const roomLive = await bufferToChosen(session.user?.email as string)
+    const roomLive = await bufferToChosen(session.user?.email as string) as string[]
     console.log("in")
     // console.log(roomLive)
 
@@ -83,13 +83,13 @@ const page = async () => {
 
             {roomLive &&
 
-                roomLive.map((ale: string, i: number) => {
+                roomLive.map((ale, i) => {
                     return <AlertComponent userEmail={ale} key={i} />
                 })
             }
             {
                 players.chooser &&
-                <AlertChooser room={roomLive.room} />
+                <AlertChooser />
             }
 
 

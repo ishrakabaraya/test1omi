@@ -24,7 +24,9 @@ const page = async () => {
         .fetch
         (PLAYER_BY_GITHUB_ID_QUERY_ROOM_ONLY, { email })
     const { data: LiveCards } = await roomCardsLive(room as string)
-    console.log(LiveCards.cards)
+    if (!LiveCards) {
+        redirect('/game_room')
+    }
 
 
     const CardList = await cardListPlayer(room, email as string)

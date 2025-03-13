@@ -102,7 +102,7 @@ export const cardListPlayer = async (room: string, email: string) => {
         '/7H.svg', '/7S.svg', '/7D.svg', '/7C.svg',
         '/8H.svg', '/8S.svg', '/8D.svg', '/8C.svg',
         '/9H.svg', '/9S.svg', '/9D.svg', '/9C.svg',
-        '/10H.svg', '/10S.svg', '/10D.svg', '/10C.svg',
+        '/TH.svg', '/TS.svg', '/TD.svg', '/TC.svg',
         '/KH.svg', '/KS.svg', '/KD.svg', '/KC.svg',
         '/QH.svg', '/QS.svg', '/QD.svg', '/QC.svg',
         '/AH.svg', '/AS.svg', '/AD.svg', '/AC.svg',
