@@ -1,10 +1,17 @@
 "use client"
 
+import * as React from "react"
+
+
 import {
     ColumnDef,
+    ColumnFiltersState,
+    SortingState,
     flexRender,
     getCoreRowModel,
+    getFilteredRowModel,
     getPaginationRowModel,
+    getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
 
@@ -19,26 +26,52 @@ import {
 
 import { Button } from "@/components/ui/button"
 
+import { Input } from "@/components/ui/input"
+
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
+
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
 }: DataTableProps<TData, TValue>) {
+
+    const [sorting, setSorting] = React.useState<SortingState>([])
+    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+        []
+    )
     const table = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
+        onSortingChange: setSorting,
+        getSortedRowModel: getSortedRowModel(),
+        onColumnFiltersChange: setColumnFilters,
+        getFilteredRowModel: getFilteredRowModel(),
+        state: {
+            sorting,
+            columnFilters,
+        },
     })
 
     return (
         <div>
+            <div className="flex items-center py-4">
+                <Input
+                    placeholder="Find A Room"
+                    value={(table.getColumn("_id")?.getFilterValue() as string) ?? ""}
+                    onChange={(event) =>
+                        table.getColumn("_id")?.setFilterValue(event.target.value)
+                    }
+                    className="max-w-sm"
+                />
+            </div>
             <div className="rounded-md border">
-                <Table>
+                <Table >
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>

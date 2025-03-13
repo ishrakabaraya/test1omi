@@ -20,13 +20,14 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { formSchema } from "@/lib/validation";
-import { createPitch, get10Rows } from "@/lib/actions";
+import { bufferToChosen, createPitch, get10Rows } from "@/lib/actions";
 import { toast } from 'sonner';
 import { z } from "zod";
-
+import { SanityLive } from '@/sanity/lib/live';
 
 const CreateRoom = () => {
-    const [created, setCreated] = useState(true);
+    const [created, setCreated] = useState("");
+    const [payment, setPayment] = useState("");
 
     const handleCreateForm = async (prevState: any, formData: FormData) => {
         try {
@@ -36,14 +37,19 @@ const CreateRoom = () => {
                 rounds: formData.get("rounds") as string,
 
             };
-            // console.log(formValues)
+            setPayment(payment)
+
 
             await formSchema.parseAsync(formValues);
             const result = await createPitch(prevState, formData);
             //console.log(result)
+            if (result.status == "CANCELED") {
+                setCreated("")
+            }
             if (result.status == "SUCCESS") {
                 toast.success('Created room successfully....')
-                setCreated(true)
+                setCreated(result._id)
+
             } else {
                 toast.error(result.error || "error")
             }
@@ -93,7 +99,7 @@ const CreateRoom = () => {
 
                         <div className="flex flex-col space-y-1.5">
                             <Label htmlFor="payment">Payment</Label>
-                            <Input id="payment" placeholder="Amount in Rs." type='number' required name="payment" />
+                            <Input id="payment" placeholder="Amount in Rs." type='number' required name="payment" onChange={(e) => { setPayment(e.target.value) }} value={payment} />
                         </div>
 
                         <div className="flex flex-col space-y-1.5" >
@@ -110,7 +116,8 @@ const CreateRoom = () => {
                                 </SelectContent>
                             </Select>
                         </div>
-                        {created ? <Button type='reset' variant={'destructive'}>cancel</Button> :
+                        <input name="cancel" type="text" hidden readOnly value={created} />
+                        {created ? <Button type='submit' variant={'destructive'}>cancel</Button> :
 
                             <Button type='submit' disabled={isPendingCreate}>Make</Button>
                         }
@@ -122,6 +129,7 @@ const CreateRoom = () => {
             {/* <CardFooter>
         <Button>Save password</Button>
     </CardFooter> */}
+
         </Card>
     )
 }

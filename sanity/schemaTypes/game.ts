@@ -31,9 +31,68 @@ export const room = defineType({
 
         },
         {
-            name: 'rounds',
-            title: 'Rounds',
+            name: 'thurumpu',
+            title: 'Thurumpu',
             type: 'string',
+
+        }, {
+            name: 'chooser',
+            title: 'Chooser',
+            type: 'string',
+
+        },
+        {
+            name: 'buffer',
+            title: 'Buffer',
+            type: 'array',
+            of:
+                [
+                    {
+                        type: 'string',
+
+                    }
+                ],
+        },
+        {
+            name: 'chosen',
+            title: 'Chosen',
+            type: 'array',
+            of:
+                [
+                    {
+                        type: 'string',
+
+                    }
+                ],
+            validation: (Rule) => Rule.max(4)
+
+        },
+        {
+            name: 'cards',
+            title: 'Cards',
+            type: 'array',
+            of:
+                [
+                    {
+                        type: 'string',
+
+                    }
+                ],
+            validation: (Rule) => Rule.max(4)
+
+        }, {
+            name: 'random',
+            title: 'Random',
+            type: 'array',
+            of:
+                [
+                    {
+                        type: 'number',
+
+                    }
+                ],
+            validation: (Rule) => Rule.max(32)
+
         },
     ],
     preview: {

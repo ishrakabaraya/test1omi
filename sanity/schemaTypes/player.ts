@@ -27,6 +27,25 @@ export const player = defineType({
             title: 'Wallet',
             type: 'number',
         },
+        {
+            name: 'room',
+            title: 'Room',
+            type: 'string',
+        },
+        {
+            name: 'cards',
+            title: 'Cards',
+            type: 'array',
+            of:
+                [
+                    {
+                        type: 'string',
+
+                    }
+                ],
+            validation: (Rule) => Rule.max(4)
+
+        },
     ],
     preview: {
         select: {

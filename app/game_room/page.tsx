@@ -19,32 +19,84 @@ import {
 import CreateRoom from './CreateRoom';
 import JoinRoom from "./JoinRoom";
 import { after } from "next/server";
-import { get10Rows } from "@/lib/actions";
-import { SanityLive } from "@/sanity/lib/live";
+import { bufferToChosen, get10Rows } from "@/lib/actions";
+import { sanityFetch } from "@/sanity/lib/live";
+import { PLAYER_BY_GITHUB_ID_QUERY_ROOM } from "@/sanity/queries";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
+import AlertComponent from "./AlertComponent";
+import { redirect } from "next/navigation";
+import { chooserCheck, chosenPlayers } from "./gameRoomAcrions";
+import AlertChooser from "./AlertChooser";
+import { auth } from "@/auth";
+
 
 const page = async () => {
 
+    const session = await auth();
+    if (!session)
+        redirect('/')
+
+    const roomLive = await bufferToChosen()
+    console.log("in")
+    console.log(roomLive)
+
+
+    // const buff = await bufferToChosen(result._id);
+    // console.log(buff)
+
+
+
+    // const getMoreRows = async () => {
+    //     const newList = await get10Rows()
+    //     return newList
+    // }
 
 
 
 
 
-    const getMoreRows = async () => {
-        const newList = await get10Rows()
-        return newList
+    //plaers
+    const players = await chosenPlayers()
+    if (players.redirect) {
+        redirect('/room')
     }
 
-
-
-
-
-
+    console.log(players)
 
 
 
 
     return (
-        <div className='bg-white w-full h-[100vh]  flex justify-center pt-10'>
+        <div className='bg-white w-full h-[100vh]  flex justify-center pt-10 overflow-scroll text-black '>
+
+
+            {roomLive &&
+
+                roomLive.map((ale: string, i: number) => {
+                    return <AlertComponent userEmail={ale} key={i} />
+                })
+            }
+            {
+                players.chooser &&
+                <AlertChooser room={roomLive.room} />
+            }
+
+
+
+
+
+
             <Tabs defaultValue="account" className="w-[90vw] max-w-[700px] ">
                 <TabsList className="grid w-full grid-cols-2 ">
                     <TabsTrigger value="account" className=''>
@@ -55,9 +107,12 @@ const page = async () => {
                     <TabsTrigger value="password">Custom</TabsTrigger>
                 </TabsList>
                 <TabsContent value="account">
+
                     <Card>
                         <CardHeader>
                             <CardTitle>Join a Room</CardTitle>
+
+
                             {/* <CardDescription>
                                 Make changes to your account here. Click save when you're done.
                             </CardDescription> */}
@@ -92,6 +147,15 @@ const page = async () => {
                                 </div>
                             </form> */}
 
+
+                            {players.chosen && players.chosen.map((p: string) => <div key={p}>
+                                <div className="text-blue-700"> {p}
+
+
+                                </div>
+
+                            </div>)}
+
                             <JoinRoom />
                         </CardContent>
                         {/* <CardFooter>
@@ -104,7 +168,7 @@ const page = async () => {
                     <CreateRoom />
                 </TabsContent>
             </Tabs>
-            <SanityLive />
+
         </div>
     )
 }

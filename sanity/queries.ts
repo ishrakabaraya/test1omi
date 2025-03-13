@@ -39,8 +39,55 @@ export const PLAYER_BY_GOOGLE_ID_QUERY = defineQuery(`
                 `);
 
 export const ROOM_MAXIMUM_10 = defineQuery(`
-                    *[_type == "room"][0..9]{
+                    *[_type == "room"]{
                         _id,
                         payment
                     }
                     `);
+export const ROOM_BUFFER = defineQuery(`
+                        *[_type == "room" && _id == $id ][0]{
+                            email,
+                            buffer,
+                            chosen
+                        }
+                        `);
+
+export const ROOM_CARDS = defineQuery(`
+                        *[_type == "room" &&  _id == $id ][0]{
+                           cards
+                        }
+                        `);
+
+export const PLAYER_BY_GITHUB_ID_QUERY_ROOM_CARDS = defineQuery(`
+                            *[_type == "player" && email == $email][0]{
+                            _id,    
+                            room ,   
+                            cards
+                            }
+                            `);
+
+export const PLAYER_BY_GITHUB_ID_QUERY_ROOM_ONLY = defineQuery(`
+                                *[_type == "player" && email == $email][0]{
+                                 
+                                room 
+                                }
+                                `);
+
+
+
+
+export const ROOM_CHOSEN = defineQuery(`
+                                    *[_type == "room" && _id == $id ][0]{
+                                        chosen,
+                                        thurumpu,
+                                        email,
+                                        chooser
+                                    }
+                                    `);
+
+export const ROOM_CHOSEN_RANDOM = defineQuery(`
+                                        *[_type == "room" && _id == $id ][0]{
+                                            chosen,
+                                            random
+                                        }
+                                        `);

@@ -7,16 +7,17 @@ import { Button } from '@/components/ui/button'
 
 import type { Item } from "./List"
 import { IKImage } from 'imagekitio-next'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type Props = {
     item: Item,
     removeItem: (id: string) => void,
-    forceDragging?: boolean,
+    arrow: boolean,
+    forceDragging?: boolean
 }
 const urlEndpoint = "https://ik.imagekit.io/m61ypgg2m"
 
-export function SortableRow({ item, removeItem, forceDragging = false }: Props) {
+export function SortableRow({ item, removeItem, arrow, forceDragging = false }: Props) {
 
     const {
         attributes,
@@ -40,7 +41,32 @@ export function SortableRow({ item, removeItem, forceDragging = false }: Props) 
 
     const draggableStyles = {
         cursor: isDragging || forceDragging ? "grabbing" : "grab",
+
+
     }
+
+    const card = useRef<HTMLDivElement>(null)
+
+
+
+
+
+
+    const setOpacity = (str: string) => {
+        if (card.current) {
+            card.current.style.transform = str
+        }
+    }
+
+    useEffect(() => {
+
+
+        if (arrow) {
+            setOpacity('rotateY(180deg)')
+        } else {
+            setOpacity('rotateY(0deg)')
+        }
+    }, [arrow]);
 
 
 
@@ -56,12 +82,14 @@ export function SortableRow({ item, removeItem, forceDragging = false }: Props) 
 
 
 
-            <div className="cards"
+            <div
                 ref={setActivatorNodeRef}
                 style={draggableStyles}
                 {...attributes} {...listeners}
             >
-                <IKImage urlEndpoint={urlEndpoint} path={item.id} alt="Greeting image" />
+                <div className="cards" ref={card}>
+                    <IKImage urlEndpoint={urlEndpoint} path={item.id} alt="Greeting image" />
+                </div>
 
             </div>
 

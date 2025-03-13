@@ -1,7 +1,10 @@
 "use client"
 
 import dynamic from 'next/dynamic'
-import { useEffect, useState } from 'react'
+import React, { useActionState, useEffect, useRef, useState } from 'react'
+import { ArrowUp } from 'lucide-react';
+import { ArrowDown } from 'lucide-react';
+
 
 import {
     closestCenter, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, TouchSensor, useSensor,
@@ -10,6 +13,8 @@ import {
 import { arrayMove, SortableContext, verticalListSortingStrategy, rectSortingStrategy } from '@dnd-kit/sortable'
 
 import { SortableRow } from './SortableRow'
+import { toast } from 'sonner';
+import { cardNameSet } from './roomActions';
 
 const DndContextWithNoSSR = dynamic(
     () => import('@dnd-kit/core').then((mod) => mod.DndContext),
@@ -47,10 +52,18 @@ export function List({ cardList }: { cardList: string[] }) {
     // for input methods detection
     const sensors = useSensors(useSensor(PointerSensor))
 
-    const removeItem = (id: string) => {
-        const updated = items.filter(item => item.id !== id).map((item, i) => ({ ...item, sequence: i + 1 }))
+    const [cardString, setCardString] = useState("")
 
-        setItems(updated)
+    const removeItem = (id: string) => {
+
+        if (cardName.current) {
+            cardName.current.value = id;
+        }
+
+        if (cardSubmit.current) {
+            cardSubmit.current.requestSubmit()
+
+        }
     }
 
     // triggered when dragging starts
@@ -60,7 +73,7 @@ export function List({ cardList }: { cardList: string[] }) {
     }
 
     const handleDragEnd = (event: DragEndEvent) => {
-        console.log('ended')
+
         // console.log(event.activatorEvent.y)
         // console.log(event.delta.y)
 
@@ -120,8 +133,106 @@ export function List({ cardList }: { cardList: string[] }) {
 
 
 
+
+    //arrow
+    const [floor, setFloor] = useState<HTMLDivElement | null>(null)
+    const [drawer, setDrawer] = useState<HTMLDivElement | null>(null)
+    const [cardcontainer, setCardcontainer] = useState<HTMLDivElement | null>(null)
+    const [arrow, setArrow] = useState(true)
+
+    const [cards, setCards] = useState<NodeListOf<HTMLElement> | null>(null)
+
+    useEffect(() => {
+        setDrawer(document.querySelector('.card_drawer') as HTMLDivElement);
+
+        setFloor(document.querySelector('.floor') as HTMLDivElement);
+
+        setCards(
+            document.querySelectorAll<HTMLElement>
+                ('.cards'))
+    }, [])
+    const handleClick = () => {
+
+        if (arrow) {
+            if (drawer && floor) {
+                drawer.style.bottom = '10vh';
+                floor.style.transform = 'translateX(-50%) translateY(-60%) rotateX(80deg) scale(1)';
+
+            }
+            if (cardContainer.current) {
+                cardContainer.current.style.width = '90vw'
+            }
+
+        } else {
+            if (drawer && floor) {
+                drawer.style.bottom = '-30vh';
+                floor.style.transform = 'translateX(-50%) translateY(-60%) rotateX(50deg) scale(1)';
+
+
+            }
+            if (cardContainer.current) {
+                cardContainer.current.style.width = '50vw'
+            }
+        }
+
+
+        setArrow(!arrow)
+    }
+
+    const cardName = useRef<HTMLInputElement | null>(null)
+
+    const cardSubmit = useRef<HTMLFormElement | null>(null)
+
+    const cardContainer = useRef<HTMLDivElement | null>(null)
+    const cardDrawer = useRef<HTMLDivElement | null>(null)
+
+    const handleCardChosen = async (prevState: any, formData: FormData) => {
+        console.log('submit')
+        try {
+
+            const id = formData.get("cardName")
+
+            const result = await cardNameSet(prevState, formData)
+            console.log(result)
+            if (result.status == "SUCCESS") {
+
+                const updated = items.filter(item => item.id !== id).map((item, i) => ({ ...item, sequence: i + 1 }))
+
+                setItems(updated)
+                setTimeout(() => {
+                    handleClick()
+                }, 500)
+            }
+            return result;
+        } catch (e) {
+            // console.log(e)
+
+            toast.error('error')
+            return { ...prevState, error: "Unexpected  Error Occured", status: "ERROR" };
+        }
+
+    }
+
+    const [stateCreate, formActionCard, isPendingCreate] = useActionState(handleCardChosen, "INITIAL");
     return (
-        <div className="flex flex-col gap-2 w-1/2 mx-auto">
+
+        <div className="card_drawer" onClick={handleClick} ref={cardDrawer}>
+
+            <form action={formActionCard} ref={cardSubmit}>
+                <input type="text" name="cardName" readOnly hidden ref={cardName} />
+                <input type="submit" hidden disabled />
+            </form>
+
+            {arrow ?
+                <ArrowUp onClick={handleClick} />
+                :
+                <ArrowDown className='mb-0' onClick={handleClick} />
+            }
+            {/* <List cardList={['/2C.svg', '/3D.svg', '/2D.svg']} /> */}
+
+
+
+
             {items?.length ? (
                 <DndContextWithNoSSR
                     sensors={sensors}
@@ -160,7 +271,8 @@ export function List({ cardList }: { cardList: string[] }) {
 
                     >
                         <div
-                            className='card_container'
+                            className="card_container w-1/2"
+                            ref={cardContainer}
                         >
                             {items.map(item => (
 
@@ -168,6 +280,7 @@ export function List({ cardList }: { cardList: string[] }) {
                                     key={item.id}
                                     item={item}
                                     removeItem={removeItem}
+                                    arrow={arrow}
 
                                 />
                             ))}
@@ -179,6 +292,7 @@ export function List({ cardList }: { cardList: string[] }) {
                             <SortableRow
                                 item={activeItem}
                                 removeItem={removeItem}
+                                arrow={arrow}
                                 forceDragging={true}
                             />
                         ) : null}
@@ -187,6 +301,14 @@ export function List({ cardList }: { cardList: string[] }) {
 
                 </DndContextWithNoSSR>
             ) : null}
+
+
+            {
+                isPendingCreate &&
+                <div className=' bg-black w-[100vw] h-[100vh] absolute -top-[20vh] opacity-40'> </div>
+            }
+
         </div>
+
     )
 }

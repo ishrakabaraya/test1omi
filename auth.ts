@@ -30,15 +30,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         },
         async jwt({ token, account, profile }) {
 
-            console.log('jwt', token)
-            console.log('account', account)
-            console.log('profile', profile)
+            // console.log('jwt', token)
+            // console.log('account', account)
+            // console.log('profile', profile)
 
             return token
         }
         , async session({ session, token }) {
-            console.log('session', session)
-            console.log('token', token)
+            // console.log('session', session)
+            // console.log('token', token)
             return session
         }
     }

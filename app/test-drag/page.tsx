@@ -1,5 +1,5 @@
 import React from 'react'
-import { List } from './List'
+import { List } from '../room/List'
 export default () => {
 
     const list = [
@@ -36,8 +36,9 @@ export default () => {
     ]
     return (
         <div>page
-
-            <List cardList={['/2C.svg', '/3D.svg', '/2D.svg']} />
+            <div className='test_frag'>
+                <List cardList={['/2C.svg', '/3D.svg', '/2D.svg']} />
+            </div>
         </div>
     )
 }

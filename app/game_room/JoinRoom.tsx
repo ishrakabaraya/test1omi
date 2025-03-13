@@ -19,7 +19,7 @@ const JoinRoom = async () => {
     return (
         <div className="container mx-auto ">
             <DataTable columns={columns} data={firstRow} />
-            <SanityLive />
+
         </div>
     )
 }

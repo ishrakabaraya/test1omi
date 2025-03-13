@@ -253,17 +253,67 @@
     }
   }
 
+  .floor {
+    position: absolute;
+    width: 100vw;
+    height: 100vw;
+    max-width: 700px;
+    max-height: 600px;
+    background-color: #303234;
+    background-image: radial-gradient(#0000, #000 50vw);
+    background-size: 100%;
+    padding: 0;
+    /* animation: floorMove 0.5s 10 linear; */
+    border: solid white 5px;
+    border-radius: 10px;
+    transition: 0.5s;
+    transform: translateX(-50%) translateY(-60%) rotateX(50deg) scale(1);
+
+    animation: floor_anim 4s;
+
+  }
+
+  .card_drawer {
+    position: absolute;
+    bottom: -30vh;
+    transition: 0.5s;
+    color: white;
+    width: 100%;
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    z-index: 5;
+
+
+  }
+
+  @keyframes floor_anim {
+    from {
+      transform: translateX(-50%) translateY(-50%) rotateX(0deg) scale(0.7);
+    }
+
+    to {
+      transform: translateX(-50%) translateY(-60%) rotateX(50deg) scale(1);
+
+    }
+  }
+
+  .test_frag {
+    position: absolute;
+    left: 50%;
+  }
+
   .card_container {
     opacity: 1s;
     position: absolute;
     left: 50%;
-    top: 50vh;
+    top: 20vh;
     transform: translateX(-50%) translateY(-50%);
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1vw;
     transition: 1s;
-    width: 100vw;
+    width: 50vw;
     padding: 1vw;
     /* animation: card_container 6s linear forwards; */
     transform-style: preserve-3d;
@@ -279,7 +329,7 @@
 
 
   .cards {
-    transform: rotateY(0deg);
+    transform: rotateY(180deg);
     transform-style: preserve-3d;
     transition: all 0.2s linear;
   }
@@ -318,20 +368,6 @@
   }
 
 
-  .floor {
-    position: absolute;
-    width: 100vw;
-    height: 100vw;
-    background-color: lightslategrey;
-    background-image: radial-gradient(#0000, #000 50vw), repeating-linear-gradient(#0000 0% 50%, #0002 50% 100%), repeating-linear-gradient(90deg, #0000 0% 50%, #0002 50% 100%);
-    background-size: 100%, 2em 2em, 2em 2em;
-
-    padding: 0;
-    transform: translateX(-50%) translateY(-50%) rotateX(20deg) scale(1.75);
-
-    /* animation: floorMove 0.5s 10 linear; */
-    /* animation: floor_anim 4s linear forwards; */
-  }
 
   @keyframes floorMove {
     from {
