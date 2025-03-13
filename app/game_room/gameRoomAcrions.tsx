@@ -52,13 +52,15 @@ export const chosenPlayers = async () => {
     let chosen = []
     let chooser = ''
     console.log("check ")
-    console.log(chosenEmails.chooser == email)
+    console.log(chosenEmails.email == email)
+    console.log(chosenEmails.email)
     console.log(email)
 
     if (chosenEmails.chosen) {
         chosen = chosenEmails.chosen
     }
     if (chosen.length > 3) {
+
         if (chosenEmails.thurumpu) {
             timer(roomLive.room)
             return {
@@ -75,8 +77,13 @@ export const chosenPlayers = async () => {
         if (session.user?.email == chosenEmails.email) {
             if (!chosenEmails.chooser) {
                 const randomNumber = Math.floor(Math.random() * 4);
-                const chooser = chosen[randomNumber]
-
+                const choos = chosen[randomNumber]
+                console.log('choos')
+                console.log(choos)
+                await writeClient
+                    .patch(roomLive.room)
+                    .set({ chooser: choos })
+                    .commit()
             }
 
         }
