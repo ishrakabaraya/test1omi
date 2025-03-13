@@ -196,7 +196,6 @@ export const JoinRoom = async (
 export const bufferToChosen = async (email: string) => {
 
 
-    await writeClient.delete({ query: `*[_type == "room" ][0..3]` })
 
 
     const { data: roomLive } = await sanityFetch({
