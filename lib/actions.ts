@@ -197,7 +197,7 @@ export const bufferToChosen = async (email: string) => {
 
 
 
-    await writeClient.delete({ query: `*[_type == "room" ][0..3]` })
+    // await writeClient.delete({ query: `*[_type == "room" ][0..3]` })
 
     const { data: roomLive } = await sanityFetch({
         query: PLAYER_BY_GITHUB_ID_QUERY_ROOM, params: {
@@ -213,7 +213,7 @@ export const bufferToChosen = async (email: string) => {
             id: roomLive.room
         }
     });
-    console.log(email_buffer_chosen)
+    // console.log(email_buffer_chosen)
     if (email_buffer_chosen == null) {
         await writeClient
             .patch(roomLive._id)
