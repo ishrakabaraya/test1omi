@@ -193,14 +193,9 @@ export const JoinRoom = async (
 };
 
 
-export const bufferToChosen = async () => {
-    const session = await auth();
-    if (!session)
-        return parseServerActionResponse({
-            error: "Not signed in",
-            status: "ERROR",
-        });
-    const { email } = session?.user || { email: "user" };
+export const bufferToChosen = async (email: string) => {
+
+
 
     await writeClient.delete({ query: `*[_type == "room" ][0..3]` })
 
@@ -228,7 +223,7 @@ export const bufferToChosen = async () => {
         return []
     }
 
-    if (session.user?.email == email_buffer_chosen.email) {
+    if (email == email_buffer_chosen.email) {
         let buffer = []
         let chosen = []
         if (email_buffer_chosen.buffer) {
@@ -247,9 +242,9 @@ export const bufferToChosen = async () => {
         return list
 
     } else {
-        if ((email_buffer_chosen.buffer && !email_buffer_chosen.buffer.includes(session.user?.email))
+        if ((email_buffer_chosen.buffer && !email_buffer_chosen.buffer.includes(email))
             &&
-            (email_buffer_chosen.chosen && !email_buffer_chosen.chosen.includes(session.user?.email))
+            (email_buffer_chosen.chosen && !email_buffer_chosen.chosen.includes(email))
 
         ) {
             await writeClient

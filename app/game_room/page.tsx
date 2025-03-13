@@ -47,9 +47,9 @@ const page = async () => {
     if (!session)
         redirect('/')
 
-    const roomLive = await bufferToChosen()
+    const roomLive = await bufferToChosen(session.user?.email as string)
     console.log("in")
-    console.log(roomLive)
+    // console.log(roomLive)
 
 
     // const buff = await bufferToChosen(result._id);
