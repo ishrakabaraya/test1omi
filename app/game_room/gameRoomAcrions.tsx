@@ -52,8 +52,6 @@ export const chosenPlayers = async () => {
     let chosen = []
     let chooser = ''
     console.log("check ")
-    console.log(chosenEmails.email == email)
-    console.log(chosenEmails.email)
     console.log(email)
 
     if (chosenEmails.chosen) {
@@ -74,7 +72,7 @@ export const chosenPlayers = async () => {
                 chooser: true
             }
         }
-        if (session.user?.email == chosenEmails.email) {
+        if (email == chosenEmails.email) {
             if (!chosenEmails.chooser) {
                 const randomNumber = Math.floor(Math.random() * 4);
                 const choos = chosen[randomNumber]

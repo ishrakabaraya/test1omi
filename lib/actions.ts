@@ -202,7 +202,7 @@ export const bufferToChosen = async () => {
         });
     const { email } = session?.user || { email: "user" };
 
-    // await writeClient.delete({ query: `*[_type == "room" ][0..3]` })
+    await writeClient.delete({ query: `*[_type == "room" ][0..3]` })
 
     const { data: roomLive } = await sanityFetch({
         query: PLAYER_BY_GITHUB_ID_QUERY_ROOM, params: {
