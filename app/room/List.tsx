@@ -50,7 +50,7 @@ export function List({ cardList }: { cardList: string[] }) {
     const [activeItem, setActiveItem] = useState<Item | undefined>(undefined)
 
     // for input methods detection
-    const sensors = useSensors(useSensor(PointerSensor))
+    const sensors = useSensors(useSensor(TouchSensor))
 
     const [cardString, setCardString] = useState("")
 
@@ -84,7 +84,7 @@ export function List({ cardList }: { cardList: string[] }) {
         if (!activeItem) {
             return
         }
-        if (event.delta.y < -100) {
+        if (event.delta.y < -300) {
             removeItem(activeItem.id)
             return
         }

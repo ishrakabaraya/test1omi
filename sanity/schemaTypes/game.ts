@@ -14,16 +14,16 @@ export const room = defineType({
             validation: (Rule) => Rule.required(),
         },
 
-        {
-            name: 'date',
-            title: 'Date',
-            type: 'string',
-        },
-        {
-            name: 'type',
-            title: 'Type',
-            type: 'string',
-        },
+        // {
+        //     name: 'date',
+        //     title: 'Date',
+        //     type: 'string',
+        // },
+        // {
+        //     name: 'type',
+        //     title: 'Type',
+        //     type: 'string',
+        // },
         {
             name: 'payment',
             title: 'Payment',
@@ -40,6 +40,20 @@ export const room = defineType({
             title: 'Chooser',
             type: 'string',
 
+        },
+        {
+            name: 'counter',
+            title: 'Counter',
+            type: 'number',
+        },
+        {
+            name: 'team1',
+            title: 'Team1',
+            type: 'number',
+        }, {
+            name: 'team2',
+            title: 'Team2',
+            type: 'number',
         },
         {
             name: 'buffer',
@@ -71,13 +85,24 @@ export const room = defineType({
             name: 'cards',
             title: 'Cards',
             type: 'array',
-            of:
-                [
-                    {
-                        type: 'string',
-
-                    }
-                ],
+            of: [
+                {
+                    type: 'object',
+                    name: 'card',
+                    fields: [
+                        {
+                            name: 'cardName',
+                            title: 'CardName',
+                            type: 'string'
+                        },
+                        {
+                            name: 'cardPlayer',
+                            title: 'CardPlayer',
+                            type: 'string'
+                        }
+                    ]
+                }
+            ],
             validation: (Rule) => Rule.max(4)
 
         }, {

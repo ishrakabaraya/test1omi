@@ -32,9 +32,9 @@ const CreateRoom = () => {
     const handleCreateForm = async (prevState: any, formData: FormData) => {
         try {
             const formValues = {
-                type: formData.get("type") as string,
+                // type: formData.get("type") as string,
                 payment: formData.get("payment") as string,
-                rounds: formData.get("rounds") as string,
+                // rounds: formData.get("rounds") as string,
 
             };
             setPayment(payment)
@@ -83,7 +83,7 @@ const CreateRoom = () => {
                 <form action={formActionCreate}>
                     <div className="grid w-full items-center gap-4">
 
-                        <div className="flex flex-col space-y-1.5" >
+                        {/* <div className="flex flex-col space-y-1.5" >
                             <Label htmlFor="type_select">Type</Label>
                             <Select required name="type">
                                 <SelectTrigger id="type_select">
@@ -95,14 +95,14 @@ const CreateRoom = () => {
 
                                 </SelectContent>
                             </Select>
-                        </div>
+                        </div> */}
 
                         <div className="flex flex-col space-y-1.5">
                             <Label htmlFor="payment">Payment</Label>
                             <Input id="payment" placeholder="Amount in Rs." type='number' required name="payment" onChange={(e) => { setPayment(e.target.value) }} value={payment} />
                         </div>
 
-                        <div className="flex flex-col space-y-1.5" >
+                        {/* <div className="flex flex-col space-y-1.5" >
                             <Label htmlFor="rounds_select">Rounds</Label>
                             <Select required name="rounds">
                                 <SelectTrigger id="rounds_select">
@@ -115,7 +115,7 @@ const CreateRoom = () => {
                                     <SelectItem value="4">4</SelectItem>
                                 </SelectContent>
                             </Select>
-                        </div>
+                        </div> */}
                         <input name="cancel" type="text" hidden readOnly value={created} />
                         {created ? <Button type='submit' variant={'destructive'}>cancel</Button> :
 

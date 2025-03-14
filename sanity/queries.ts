@@ -54,9 +54,14 @@ export const ROOM_BUFFER = defineQuery(`
 
 export const ROOM_CARDS = defineQuery(`
                         *[_type == "room" &&  _id == $id ][0]{
-                           cards
+                           cards,
+                           chosen,
+                           counter,
+                           chooser
                         }
                         `);
+
+
 
 export const PLAYER_BY_GITHUB_ID_QUERY_ROOM_CARDS = defineQuery(`
                             *[_type == "player" && email == $email][0]{
@@ -88,6 +93,16 @@ export const ROOM_CHOSEN = defineQuery(`
 export const ROOM_CHOSEN_RANDOM = defineQuery(`
                                         *[_type == "room" && _id == $id ][0]{
                                             chosen,
-                                            random
+                                            random,
+                                            cards,
+                                            _id
                                         }
                                         `);
+
+export const PLAYER_CARDS_SET_GET = defineQuery(`
+                                            *[_type == "player" && email == $email ][0]{
+                                               
+                                                cards,
+                                                _id
+                                            }
+                                            `);

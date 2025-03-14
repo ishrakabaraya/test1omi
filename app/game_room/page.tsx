@@ -148,13 +148,26 @@ const page = async () => {
                             </form> */}
 
 
-                            {players.chosen && players.chosen.map((p: string) => <div key={p}>
+                            {/* {players.chosen && players.chosen.map((p: string, i: number) => <div key={p + i}>
                                 <div className="text-blue-700"> {p}
 
 
                                 </div>
 
-                            </div>)}
+                            </div>)} */}
+                            {
+                                players.chosen && <div className='text-blue-600'>{players.chosen[0]}</div>
+                            }
+                            {
+                                players.chosen && <div className='text-blue-600'>{players.chosen[2]}</div>
+                            }
+                            VS.
+                            {
+                                players.chosen && <div className='text-red-500'>{players.chosen[1]}</div>
+                            }
+                            {
+                                players.chosen && <div className='text-red-500'>{players.chosen[3]}</div>
+                            }
 
                             <JoinRoom />
                         </CardContent>

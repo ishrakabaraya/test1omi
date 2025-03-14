@@ -70,10 +70,10 @@ const AlertChooser = () => {
 
 
                     <form action={formActionCancel} className="flex  gap-9">
-                        <Button disabled={isPendingCreate} type="submit" name="cardType" value={'club'} ><Club /></Button>
-                        <Button disabled={isPendingCreate} type="submit" name="cardType" value={'diamond'}><Diamond /></Button>
-                        <Button disabled={isPendingCreate} type="submit" name="cardType" value={'heart'}><Heart /></Button>
-                        <Button disabled={isPendingCreate} type="submit" name="cardType" value={'spade'}><Spade /></Button>
+                        <Button disabled={isPendingCreate} type="submit" name="cardType" value={'C'} ><Club /></Button>
+                        <Button disabled={isPendingCreate} type="submit" name="cardType" value={'D'}><Diamond /></Button>
+                        <Button disabled={isPendingCreate} type="submit" name="cardType" value={'H'}><Heart /></Button>
+                        <Button disabled={isPendingCreate} type="submit" name="cardType" value={'S'}><Spade /></Button>
 
                     </form>
                     {/* <form action={formActionCancel}>

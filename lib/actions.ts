@@ -30,7 +30,8 @@ export const createPitch = async (
 
 
 
-    const { type, payment, rounds, cancel } = Object.fromEntries(form)
+    // const { type, payment, rounds, cancel } = Object.fromEntries(form)
+    const { payment, cancel } = Object.fromEntries(form)
 
 
     try {
@@ -50,10 +51,12 @@ export const createPitch = async (
 
         const result = await writeClient.create({
             _type: "room",
-            type,
+            // type,
             payment,
-            chosen: [email],
-            rounds,
+            chosen: [email, "", "", ""],
+            counter: 0,
+            team1: 0,
+            team2: 0,
             email: session.user?.email
 
         });
@@ -194,7 +197,7 @@ export const JoinRoom = async (
 
 
 export const bufferToChosen = async (email: string) => {
-
+    // await writeClient.delete({ query: `*[_type == "room" ][0..3]` })
 
 
 
@@ -216,7 +219,10 @@ export const bufferToChosen = async (email: string) => {
     if (email_buffer_chosen == null) {
         await writeClient
             .patch(roomLive._id)
-            .set({ room: "" })
+            .set({
+                room: "",
+                cards: []
+            })
             .commit()
 
         return []
@@ -250,7 +256,10 @@ export const bufferToChosen = async (email: string) => {
         ) {
             await writeClient
                 .patch(roomLive._id)
-                .set({ room: "" })
+                .set({
+                    room: "",
+                    cards: []
+                })
                 .commit()
         }
 
@@ -283,7 +292,7 @@ export const RemoveFromBuffer = async (
         (PLAYER_BY_GITHUB_ID_QUERY_ROOM, { email })
 
 
-    const { EmailTo, Accept } = Object.fromEntries(form) || ""
+    const { EmailTo, Accept, Team } = Object.fromEntries(form) || ""
 
 
     try {
@@ -310,18 +319,60 @@ export const RemoveFromBuffer = async (
             .commit()
         if (Accept == 'true') {
             if (chosen) {
+                const playersArray = chosen
+                if (Team == '1') {
+                    if (!chosen[2]) {
+                        playersArray[2] = EmailTo
+                        await writeClient
+                            .patch(room)
+                            .set({ chosen: playersArray })
+                            .commit()
+                        return parseServerActionResponse({
+                            // ...result,
+                            error: "",
+                            status: "SUCCESS",
+                        });
+                    }
 
-                await writeClient
-                    .patch(room)
-                    .set({ chosen: [...chosen, EmailTo] })
-                    .commit()
+                }
+                if (Team == '2') {
+                    if (!chosen[1]) {
+                        playersArray[1] = EmailTo
+                        await writeClient
+                            .patch(room)
+                            .set({ chosen: playersArray })
+                            .commit()
+                        return parseServerActionResponse({
+                            // ...result,
+                            error: "",
+                            status: "SUCCESS",
+                        });
+                    }
+                    if (!chosen[3]) {
+                        playersArray[3] = EmailTo
+                        await writeClient
+                            .patch(room)
+                            .set({ chosen: playersArray })
+                            .commit()
+                        return parseServerActionResponse({
+                            // ...result,
+                            error: "",
+                            status: "SUCCESS",
+                        });
+                    }
+                }
+
+                // await writeClient
+                //     .patch(room)
+                //     .set({ chosen: [...chosen, EmailTo] })
+                //     .commit()
             }
-            else {
-                await writeClient
-                    .patch(room)
-                    .set({ chosen: [EmailTo] })
-                    .commit()
-            }
+            // else {
+            //     await writeClient
+            //         .patch(room)
+            //         .set({ chosen: [EmailTo] })
+            //         .commit()
+            // }
         }
 
         // const result = await writeClient.create({

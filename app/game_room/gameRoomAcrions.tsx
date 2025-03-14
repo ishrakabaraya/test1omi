@@ -57,7 +57,7 @@ export const chosenPlayers = async () => {
     if (chosenEmails && chosenEmails.chosen) {
         chosen = chosenEmails.chosen
     }
-    if (chosenEmails && chosen.length > 3) {
+    if (chosenEmails && chosen[0] && chosen[1] && chosen[2] && chosen[3]) {
 
         if (chosenEmails.thurumpu) {
             timer(roomLive.room)

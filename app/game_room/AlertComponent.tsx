@@ -59,7 +59,7 @@ const AlertComponent = ({ userEmail }: { userEmail: string }) => {
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>
-                            Are you absolutely sure?
+
                         </AlertDialogTitle>
                         <AlertDialogDescription>
 
@@ -69,8 +69,9 @@ const AlertComponent = ({ userEmail }: { userEmail: string }) => {
                     <AlertDialogFooter>
                         <div className="flex gap-1 justify-between">
                             <form action={formActionCancel}>
-                                <input type="text" name="EmailTo" value={userEmail} readOnly />
-                                <input type="text" name="Accept" value={'false'} readOnly />
+                                <input type="text" name="EmailTo" value={userEmail} readOnly className="w-0" />
+                                <input type="text" name="Accept" value={'false'} readOnly className="w-0" />
+                                <input type="text" name="Team" value={'0'} readOnly className="w-0" />
                                 <Button type="submit" variant="ghost"
                                     className="text-black"
                                     onClick={() => cancel.current && cancel.current.click()}
@@ -84,19 +85,32 @@ const AlertComponent = ({ userEmail }: { userEmail: string }) => {
                             </AlertDialogCancel>
 
                             <form action={formActionCancel}>
-                                <input type="text" name="EmailTo" value={userEmail} readOnly />
-                                <input type="text" name="Accept" value={'true'} readOnly />
-                                <Button type="submit" variant="ghost"
+                                <input type="text" name="EmailTo" value={userEmail} readOnly className="w-0" />
+                                <input type="text" name="Accept" value={'true'} readOnly className="w-0" />
+                                <input type="text" name="Team" value={'1'} readOnly className="w-0" />
+                                <Button type="submit" variant="outline"
                                     className="text-black"
                                     onClick={() => accept.current && accept.current.click()}
                                     disabled={isPendingCreate}
                                 >
-                                    allow
+                                    MyTeam
+                                </Button>
+                            </form>
+                            <form action={formActionCancel}>
+                                <input type="text" name="EmailTo" value={userEmail} readOnly className="w-0" />
+                                <input type="text" name="Accept" value={'true'} readOnly className="w-0" />
+                                <input type="text" name="Team" value={'2'} readOnly className="w-0" />
+                                <Button type="submit" variant="outline"
+                                    className="text-black"
+                                    onClick={() => accept.current && accept.current.click()}
+                                    disabled={isPendingCreate}
+                                >
+                                    Opposite
                                 </Button>
                             </form>
 
 
-                            <AlertDialogAction ref={accept}></AlertDialogAction>
+                            <AlertDialogAction ref={accept} className=" p-0  !opacity-0"></AlertDialogAction>
                         </div>
                     </AlertDialogFooter>
                 </AlertDialogContent>

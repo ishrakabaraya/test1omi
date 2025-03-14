@@ -23,6 +23,11 @@ const page = async () => {
     const { room } = await client.withConfig({ useCdn: false })
         .fetch
         (PLAYER_BY_GITHUB_ID_QUERY_ROOM_ONLY, { email })
+
+
+
+    if (!room)
+        redirect('/game_room')
     const { data: LiveCards } = await roomCardsLive(room as string)
     if (!LiveCards) {
         redirect('/game_room')
@@ -31,8 +36,21 @@ const page = async () => {
 
     const CardList = await cardListPlayer(room, email as string)
 
-    console.log("CardList")
-    console.log(CardList)
+
+
+    const liveRoom = await sanityFetch({
+        query: PLAYER_BY_GITHUB_ID_QUERY_ROOM_ONLY, params: {
+            email
+        }
+    })
+    if (!liveRoom) {
+        redirect('/game_room')
+    }
+
+    // console.log("CardList")
+    // console.log(CardList)
+
+
 
     return (
 
@@ -56,8 +74,22 @@ const page = async () => {
                 <List cardList={CardList} />
             }
 
+            {
+                (LiveCards.chooser == email) &&
+                <div className='bg-red-600 w-1/2 fixed top-[5vh] p-[2vh]'>Your Turn</div>
+            }
+            {
+                (LiveCards && LiveCards.team1 > -1) &&
+                <div className='text-blue-600 fixed top-[5vw] left-[5vw] '>{LiveCards.team1}</div>
+            }
+            {
+                (LiveCards && LiveCards.team2 > -1) &&
+                <div className='text-red-600 fixed top-[5vw] right-[5vw] '>{LiveCards.team2}</div>
+            }
+
 
             <SanityLive />
+
         </div>
 
     )
