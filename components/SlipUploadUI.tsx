@@ -37,11 +37,11 @@ export default function DrawerDialogDemo() {
         return (
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
-                    <Button className='upload_button  p-[30px] left-1/2 -translate-x-[calc(256px)] '>
+                    <Button className='upload_button  p-[30px] left-1/2 -translate-x-[calc(256px)] bottom-[5vh]'>
                         <ImageUp />
                     </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent className="sm:max-w-[425px] text-black">
                     <DialogHeader>
                         <DialogTitle>UPLOAD RECEIPT</DialogTitle>
                         <DialogDescription>
