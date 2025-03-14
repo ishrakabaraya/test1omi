@@ -76,15 +76,15 @@ const page = async () => {
 
             {
                 (LiveCards.chooser == email) &&
-                <div className='bg-red-600 w-1/2 fixed top-[5vh] p-[2vh]'>Your Turn</div>
+                <div className='bg-slate-700 w-1/2 fixed top-[5vh] p-[2vh] text-center'>YOUR TURN</div>
             }
             {
                 (LiveCards && LiveCards.team1 > -1) &&
-                <div className='text-blue-600 fixed top-[5vw] left-[5vw] '>{LiveCards.team1}</div>
+                <div className='text-blue-600 fixed top-[5vw] left-[5vw] bg-white p-[2vw] rounded-full'>{LiveCards.team1}</div>
             }
             {
                 (LiveCards && LiveCards.team2 > -1) &&
-                <div className='text-red-600 fixed top-[5vw] right-[5vw] '>{LiveCards.team2}</div>
+                <div className='text-red-600 fixed top-[5vw] right-[5vw] bg-white p-[2vw] rounded-full'>{LiveCards.team2}</div>
             }
 
 
