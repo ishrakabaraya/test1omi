@@ -237,11 +237,12 @@ export const bufferToChosen = async (email: string) => {
         if (email_buffer_chosen.chosen) {
             chosen = email_buffer_chosen.chosen
         }
-        const list: string = buffer.map((b: string) => {
+        const list: string[] = []
+        buffer.map((b: string) => {
 
             if (chosen.length < 5 && !chosen.includes(b)) {
 
-                return b;
+                list.push(b)
             }
         })
         console.log("check list type")

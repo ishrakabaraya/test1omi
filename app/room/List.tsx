@@ -50,7 +50,7 @@ export function List({ cardList }: { cardList: string[] }) {
     const [activeItem, setActiveItem] = useState<Item | undefined>(undefined)
 
     // for input methods detection
-    const sensors = useSensors(useSensor(TouchSensor))
+    const sensors = useSensors(useSensor(PointerSensor))
 
     const [cardString, setCardString] = useState("")
 

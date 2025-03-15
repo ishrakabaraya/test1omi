@@ -40,7 +40,7 @@ export const cardNameSet = async (
 
 
 
-    const { cardName } = Object.fromEntries(form)
+    const { cardName } = Object.fromEntries(form) as { cardName: string };
     // console.log(cardName)
     // console.log(roomCards)
 
@@ -68,9 +68,9 @@ export const cardNameSet = async (
             let cardMax = checkCards[0]
             const sorter = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'Q', 'K', 'A']
             checkCards.map((card: any) => {
-                const max = cardMax.cardName[0]
-                const name = card.cardName[0]
-                const thurump = thurumpu[0]
+                const max = cardMax.cardName[2]
+                const name = card.cardName[2]
+                const thurump = thurumpu
                 const maxL = sorter.indexOf(cardMax.cardName[1])
                 const cardL = sorter.indexOf(card.cardName[1])
                 if (max == thurump) {
@@ -96,6 +96,7 @@ export const cardNameSet = async (
                     .patch(room)
                     .set({
                         team1: team1 + 1,
+                        chooser: cardMax.cardPlayer
 
                     })
                     .commit()
@@ -105,6 +106,7 @@ export const cardNameSet = async (
                     .patch(room)
                     .set({
                         team2: team2 + 1,
+                        chooser: cardMax.cardPlayer
 
                     })
                     .commit()
@@ -120,7 +122,28 @@ export const cardNameSet = async (
 
         }
 
-        if (roomCards) {
+        if (roomCards && roomCards.length > 0) {
+            console.log(roomCards[0].cardName[2])
+            console.log(cardName[2])
+            if (!(roomCards[0].cardName[2] == cardName[2])) {
+                console.log("cards")
+                const clist: string[] = []
+                cards.map((c: string) => {
+
+                    console.log(c[2])
+                    if (c[2] == roomCards[0].cardName[2]) {
+                        clist.push(c)
+                    }
+                })
+                console.log(clist)
+                if (clist && clist.length > 0) {
+                    return parseServerActionResponse({
+                        error: "Wrong card",
+                        status: "ERROR",
+                    });
+                }
+            }
+
             await writeClient
                 .patch(room)
                 .set({

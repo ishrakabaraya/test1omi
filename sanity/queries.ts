@@ -81,6 +81,7 @@ export const PLAYER_BY_GITHUB_ID_QUERY_ROOM_ONLY = defineQuery(`
 
 
 
+
 export const ROOM_CHOSEN = defineQuery(`
                                     *[_type == "room" && _id == $id ][0]{
                                         chosen,
@@ -106,3 +107,10 @@ export const PLAYER_CARDS_SET_GET = defineQuery(`
                                                 _id
                                             }
                                             `);
+
+
+export const ROOM_THURUMPU_ONLY = defineQuery(`
+                                                *[_type == "room" && _id == $id ][0]{
+                                                    thurumpu
+                                                }
+                                                `);

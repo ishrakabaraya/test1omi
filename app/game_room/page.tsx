@@ -21,7 +21,7 @@ import JoinRoom from "./JoinRoom";
 import { after } from "next/server";
 import { bufferToChosen, get10Rows } from "@/lib/actions";
 import { sanityFetch } from "@/sanity/lib/live";
-import { PLAYER_BY_GITHUB_ID_QUERY_ROOM } from "@/sanity/queries";
+import { PLAYER_BY_GITHUB_ID_QUERY_ROOM, PLAYER_BY_GITHUB_ID_QUERY_ROOM_ONLY } from "@/sanity/queries";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -40,15 +40,30 @@ import { chooserCheck, chosenPlayers } from "./gameRoomAcrions";
 import AlertChooser from "./AlertChooser";
 import { auth } from "@/auth";
 
-
 const page = async () => {
 
     const session = await auth();
     if (!session)
         redirect('/')
 
+    const { email } = session?.user || { email: "user" };
+
     const roomLive = await bufferToChosen(session.user?.email as string) as string[]
     console.log("in")
+
+
+
+    // if (roomLive.length > 2) {
+    //     redirect('/game_room')
+    // }
+    //PLAYER_BY_GITHUB_ID_QUERY_ROOM_ONLY
+
+
+    const { data: roomData } = await sanityFetch({
+        query: PLAYER_BY_GITHUB_ID_QUERY_ROOM_ONLY, params: {
+            email
+        }
+    })
     // console.log(roomLive)
 
 
@@ -177,8 +192,9 @@ const page = async () => {
 
                     </Card>
                 </TabsContent>
+
                 <TabsContent value="password">
-                    <CreateRoom />
+                    <CreateRoom room={roomData.room ? roomData.room : ""} />
                 </TabsContent>
             </Tabs>
 

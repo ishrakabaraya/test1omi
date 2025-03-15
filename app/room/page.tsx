@@ -3,13 +3,14 @@ import CardContainer from '@/components/CardContainer';
 import CardDrawer from './CardDrawer';
 import { List } from './List';
 import { sanityFetch, SanityLive } from '@/sanity/lib/live';
-import { PLAYER_BY_GITHUB_ID_QUERY_ROOM_ONLY, ROOM_CARDS } from '@/sanity/queries';
+import { PLAYER_BY_GITHUB_ID_QUERY_ROOM_ONLY, ROOM_CARDS, ROOM_THURUMPU_ONLY } from '@/sanity/queries';
 import { cardListPlayer, roomCardsLive } from './roomActions';
 import { auth } from '@/auth';
 import { parseServerActionResponse } from '@/lib/utils';
 import { redirect } from 'next/navigation';
 import CardsHand from './CardsHand';
 import { client } from '@/sanity/client';
+import { Diamond } from 'lucide-react';
 
 
 
@@ -26,8 +27,31 @@ const page = async () => {
 
 
 
+
     if (!room)
         redirect('/game_room')
+
+
+    let thurump = ''
+
+    try {
+        const { thurumpu } = await client.withConfig({ useCdn: false })
+            .fetch
+            (ROOM_THURUMPU_ONLY, { id: room })
+        if (!thurumpu)
+            redirect('/game_room')
+        thurump = thurumpu
+    } catch (e) {
+        redirect('/game_room')
+    }
+
+
+
+
+
+
+
+
     const { data: LiveCards } = await roomCardsLive(room as string)
     if (!LiveCards) {
         redirect('/game_room')
@@ -60,6 +84,10 @@ const page = async () => {
             <div className="scene ">
                 <div className="floor flex justify-center items-center">
 
+                    <div className='absolute top-1/2 left-1/2 -translate-x-1/2 w-[10vw]'>
+                        {(thurump && thurump == "D") && <Diamond className='w-full' />}
+
+                    </div>
                     <div className='text-white'>
                         <CardsHand Cards={LiveCards.cards} />
                     </div>

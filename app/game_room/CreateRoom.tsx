@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useActionState } from 'react';
+import React, { useState, useActionState, useEffect } from 'react';
 import {
     Card,
     CardContent,
@@ -24,10 +24,17 @@ import { bufferToChosen, createPitch, get10Rows } from "@/lib/actions";
 import { toast } from 'sonner';
 import { z } from "zod";
 import { SanityLive } from '@/sanity/lib/live';
+import { redirect } from 'next/dist/server/api-utils';
+import { useRouter } from 'next/router';
 
-const CreateRoom = () => {
+
+const CreateRoom = ({ room }: { room: string }) => {
     const [created, setCreated] = useState("");
     const [payment, setPayment] = useState("");
+
+
+
+
 
     const handleCreateForm = async (prevState: any, formData: FormData) => {
         try {
@@ -45,14 +52,19 @@ const CreateRoom = () => {
             //console.log(result)
             if (result.status == "CANCELED") {
                 setCreated("")
+                window.location.reload()
+                toast.success('Canceled room successfully...')
+
             }
             if (result.status == "SUCCESS") {
                 toast.success('Created room successfully....')
                 setCreated(result._id)
+                window.location.reload()
 
-            } else {
-                toast.error(result.error || "error")
             }
+            // else {
+            //     toast.error("reload")
+            // }
 
             return result;
         } catch (e) {
@@ -116,8 +128,8 @@ const CreateRoom = () => {
                                 </SelectContent>
                             </Select>
                         </div> */}
-                        <input name="cancel" type="text" hidden readOnly value={created} />
-                        {created ? <Button type='submit' variant={'destructive'}>cancel</Button> :
+                        <input name="cancel" type="text" hidden readOnly value={room} />
+                        {(room) ? <Button type='submit' variant={'destructive'} disabled={isPendingCreate}>cancel</Button> :
 
                             <Button type='submit' disabled={isPendingCreate}>Make</Button>
                         }
