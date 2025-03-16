@@ -11,7 +11,7 @@ import { ROOM_CARDS_CHOOSER_TEAMS, TEAMS_THURUMPU } from "./roomQueries";
 
 
 export const cardNameSet = async (
-    state: any,
+
     form: FormData,
 ) => {
     const session = await auth();
@@ -40,12 +40,14 @@ export const cardNameSet = async (
 
 
 
-    const { cardName } = Object.fromEntries(form) as { cardName: string };
+    const { cardName, timer } = Object.fromEntries(form) as { cardName: string, timer: string };
     // console.log(cardName)
     // console.log(roomCards)
 
     try {
-        if (chooser != email) {
+        console.log('timer')
+        console.log(timer)
+        if ((chooser != email) && timer == "true") {
             return parseServerActionResponse({
                 error: "not your turn",
                 status: "ERROR",
@@ -138,8 +140,8 @@ export const cardNameSet = async (
                 console.log(clist)
                 if (clist && clist.length > 0) {
                     return parseServerActionResponse({
-                        error: "Wrong card",
-                        status: "ERROR",
+                        error: clist[0],
+                        status: "WRONG",
                     });
                 }
             }
@@ -243,8 +245,14 @@ export const cardListPlayer = async (room: string, email: string) => {
     const { cards, _id } = await client.withConfig({ useCdn: false })
         .fetch
         (PLAYER_CARDS_SET_GET, { email })
-    if (cards && cards.length > 0) {
-        return cards
+
+    const { data } = await sanityFetch({
+        query: PLAYER_CARDS_SET_GET, params: {
+            email
+        }
+    })
+    if (data.cards && data.cards.length > 0) {
+        return data.cards
     }
 
     if (chosen) {

@@ -3,14 +3,15 @@ import CardContainer from '@/components/CardContainer';
 import CardDrawer from './CardDrawer';
 import { List } from './List';
 import { sanityFetch, SanityLive } from '@/sanity/lib/live';
-import { PLAYER_BY_GITHUB_ID_QUERY_ROOM_ONLY, ROOM_CARDS, ROOM_THURUMPU_ONLY } from '@/sanity/queries';
-import { cardListPlayer, roomCardsLive } from './roomActions';
+import { PLAYER_BY_GITHUB_ID_QUERY_CARDS, PLAYER_BY_GITHUB_ID_QUERY_ROOM_ONLY, ROOM_CARDS, ROOM_CHOOSER_ONLY, ROOM_THURUMPU_CREATED_OWNER, ROOM_THURUMPU_ONLY } from '@/sanity/queries';
+import { cardListPlayer, cardNameSet, roomCardsLive } from './roomActions';
 import { auth } from '@/auth';
 import { parseServerActionResponse } from '@/lib/utils';
 import { redirect } from 'next/navigation';
 import CardsHand from './CardsHand';
 import { client } from '@/sanity/client';
-import { Diamond } from 'lucide-react';
+import { Club, Diamond, Heart, Spade } from 'lucide-react';
+import { writeClient } from '@/sanity/write-client';
 
 
 
@@ -33,14 +34,27 @@ const page = async () => {
 
 
     let thurump = ''
+    let owner = ''
 
     try {
-        const { thurumpu } = await client.withConfig({ useCdn: false })
+        const { thurumpu, _createdAt, email: ownerEmail } = await client.withConfig({ useCdn: false })
             .fetch
-            (ROOM_THURUMPU_ONLY, { id: room })
+            (ROOM_THURUMPU_CREATED_OWNER, { id: room })
         if (!thurumpu)
             redirect('/game_room')
         thurump = thurumpu
+        owner = ownerEmail
+
+        const createdAt = new Date(_createdAt);
+        const currentTime = new Date();
+        const timeDifference = Math.floor((currentTime.getTime() - createdAt.getTime()) / 60000); // Convert milliseconds to minutes
+
+        if (timeDifference > 10) {
+
+            await writeClient.delete(room as string)
+
+        }
+
     } catch (e) {
         redirect('/game_room')
     }
@@ -74,6 +88,80 @@ const page = async () => {
     // console.log("CardList")
     // console.log(CardList)
 
+    // const { data: chooserLive } = await sanityFetch({
+    //     query: ROOM_CHOOSER_ONLY, params: {
+    //         id: room
+    //     }
+    // });
+
+
+    // async function chooserCards() {
+    //     console.log("hii")
+
+    //     setTimeout(async () => {
+
+
+    //         const { cards } = await client.withConfig({ useCdn: false })
+    //             .fetch
+    //             (PLAYER_BY_GITHUB_ID_QUERY_CARDS, { email: chooserLive.chooser })
+
+    //         console.log(cards[0])
+    //         const formData = new FormData();
+    //         formData.append('cardName', cards[0]);
+    //         formData.append('timer', 'true');
+    //         console.log('form')
+    //         console.log(formData.get("cardName"))
+    //         await cardNameSet(formData)
+
+
+    //     }, 10000)
+    // }
+
+    // if (owner == email) {
+    //     chooserCards()
+    // }
+
+
+
+
+
+    // async function randomCard() {
+    //     console.log("hii")
+    //     const { chooser: chooser1 } = await client.withConfig({ useCdn: false })
+    //         .fetch
+    //         (ROOM_CHOOSER_ONLY, { id: room })
+    //     setTimeout(async () => {
+
+    //         const { chooser: chooser2 } = await client.withConfig({ useCdn: false })
+    //             .fetch
+    //             (ROOM_CHOOSER_ONLY, { id: room })
+
+    //         console.log(chooser1)
+    //         console.log(chooser2)
+    //         if (chooser1 == chooser2) {
+    //             const { cards } = await client.withConfig({ useCdn: false })
+    //                 .fetch
+    //                 (PLAYER_BY_GITHUB_ID_QUERY_CARDS, { email: chooser1 })
+
+    //             console.log(cards)
+    //             const formData = new FormData();
+    //             formData.append('cardName', cards[0]);
+    //             formData.append('timer', 'false');
+    //             const result = await cardNameSet(formData)
+    //             if (result.statue == 'WRONG') {
+    //                 await cardNameSet(result.error)
+    //             }
+    //             randomCard()
+    //         }
+
+
+    //     }, 20000)
+    // }
+
+    // if (owner == email) {
+    //     randomCard()
+    // }
+
 
 
     return (
@@ -86,6 +174,9 @@ const page = async () => {
 
                     <div className='absolute top-1/2 left-1/2 -translate-x-1/2 w-[10vw]'>
                         {(thurump && thurump == "D") && <Diamond className='w-full' />}
+                        {(thurump && thurump == "H") && <Heart className='w-full' />}
+                        {(thurump && thurump == "C") && <Club className='w-full' />}
+                        {(thurump && thurump == "S") && <Spade className='w-full' />}
 
                     </div>
                     <div className='text-white'>

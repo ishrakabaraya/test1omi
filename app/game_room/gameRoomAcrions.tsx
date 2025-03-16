@@ -5,7 +5,7 @@ import { parseServerActionResponse } from "@/lib/utils";
 
 import { writeClient } from "@/sanity/write-client";
 import { client } from "@/sanity/client";
-import { PLAYER_BY_GITHUB_ID_QUERY_ROOM, ROOM_BUFFER, ROOM_CHOSEN, ROOM_MAXIMUM_10 } from "@/sanity/queries";
+import { PLAYER_BY_GITHUB_ID_QUERY_ROOM, ROOM_BUFFER, ROOM_CHOSEN, ROOM_CHOSEN_CHOOSER, ROOM_MAXIMUM_10 } from "@/sanity/queries";
 import { sanityFetch } from "@/sanity/lib/live";
 import { LiveClient } from "next-sanity";
 
@@ -154,4 +154,38 @@ export const setThurumpu = async (state: any,
         error: "",
         status: "SUCCESS",
     });
+}
+
+
+
+export const cancelButtonAction = async (room: string, id: string, email: string) => {
+
+    const { buffer, chosen, email: roomEmail } = await client.withConfig({ useCdn: false })
+        .fetch
+        (ROOM_CHOSEN_CHOOSER, { id: room })
+    if (roomEmail == email) {
+        await writeClient.delete(room as string)
+    }
+    if (!(chosen[0] && chosen[1] && chosen[2] && chosen[3])) {
+        await writeClient
+            .patch(room)
+            .set({
+                buffer: buffer.filter((item: string) => item != email),
+                chosen: chosen.filter((item: string) => item != email)
+            })
+            .commit()
+        console.log("--------------id")
+        console.log(id)
+        await writeClient
+            .patch(id)
+            .set({ room: '' })
+            .commit()
+    }
+
+    return parseServerActionResponse({
+        // ...result,
+        error: "",
+        status: "SUCCESS",
+    });
+
 }

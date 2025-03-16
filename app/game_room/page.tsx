@@ -20,8 +20,8 @@ import CreateRoom from './CreateRoom';
 import JoinRoom from "./JoinRoom";
 import { after } from "next/server";
 import { bufferToChosen, get10Rows } from "@/lib/actions";
-import { sanityFetch } from "@/sanity/lib/live";
-import { PLAYER_BY_GITHUB_ID_QUERY_ROOM, PLAYER_BY_GITHUB_ID_QUERY_ROOM_ONLY } from "@/sanity/queries";
+import { sanityFetch, SanityLive } from "@/sanity/lib/live";
+import { PLAYER_BY_GITHUB_ID_QUERY_ROOM, PLAYER_BY_GITHUB_ID_QUERY_ROOM_ID, PLAYER_BY_GITHUB_ID_QUERY_ROOM_ONLY, ROOM_CHOSEN_CHOOSER } from "@/sanity/queries";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -39,6 +39,9 @@ import { redirect } from "next/navigation";
 import { chooserCheck, chosenPlayers } from "./gameRoomAcrions";
 import AlertChooser from "./AlertChooser";
 import { auth } from "@/auth";
+import { client } from "@/sanity/client";
+import { writeClient } from "@/sanity/write-client";
+import CancelButton from "./CancelButton";
 
 const page = async () => {
 
@@ -48,8 +51,9 @@ const page = async () => {
 
     const { email } = session?.user || { email: "user" };
 
-    const roomLive = await bufferToChosen(session.user?.email as string) as string[]
+    let roomLive = await bufferToChosen(session.user?.email as string) as string[]
     console.log("in")
+
 
 
 
@@ -60,7 +64,7 @@ const page = async () => {
 
 
     const { data: roomData } = await sanityFetch({
-        query: PLAYER_BY_GITHUB_ID_QUERY_ROOM_ONLY, params: {
+        query: PLAYER_BY_GITHUB_ID_QUERY_ROOM_ID, params: {
             email
         }
     })
@@ -92,8 +96,19 @@ const page = async () => {
 
 
 
+
     return (
-        <div className='bg-white w-full h-[100vh]  flex justify-center pt-10 overflow-scroll text-black '>
+        <div className='bg-white w-full h-[100vh]  flex justify-start pt-10 overflow-scroll text-black  flex-col items-center'>
+            {/* {'poat'}
+            {roomData.room}
+            <br />
+            {roomData._id} */}
+            {(roomData.room) &&
+                <div className="text-black fixed bottom-[10vw]">
+                    <CancelButton room={roomData.room} id={roomData._id} email={email as string} />
+
+                </div>
+            }
 
 
             {roomLive &&
@@ -123,7 +138,9 @@ const page = async () => {
                 </TabsList>
                 <TabsContent value="account">
 
+
                     <Card>
+
                         <CardHeader>
                             <CardTitle>Join a Room</CardTitle>
 
@@ -194,10 +211,16 @@ const page = async () => {
                 </TabsContent>
 
                 <TabsContent value="password">
-                    <CreateRoom room={roomData.room ? roomData.room : ""} />
+                    <CreateRoom />
                 </TabsContent>
+
+
+
             </Tabs>
 
+
+
+            <SanityLive />
         </div>
     )
 }

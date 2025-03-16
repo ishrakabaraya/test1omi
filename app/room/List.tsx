@@ -192,7 +192,7 @@ export function List({ cardList }: { cardList: string[] }) {
 
             const id = formData.get("cardName")
 
-            const result = await cardNameSet(prevState, formData)
+            const result = await cardNameSet(formData)
             console.log(result)
             if (result.status == "SUCCESS") {
 
@@ -220,6 +220,7 @@ export function List({ cardList }: { cardList: string[] }) {
 
             <form action={formActionCard} ref={cardSubmit}>
                 <input type="text" name="cardName" readOnly hidden ref={cardName} />
+                <input type="text" name="timer" readOnly hidden value={'true'} />
                 <input type="submit" hidden disabled />
             </form>
 

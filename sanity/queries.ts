@@ -114,3 +114,42 @@ export const ROOM_THURUMPU_ONLY = defineQuery(`
                                                     thurumpu
                                                 }
                                                 `);
+
+
+export const ROOM_CHOSEN_CHOOSER = defineQuery(`
+                                                    *[_type == "room" && _id == $id ][0]{
+                                                    buffer,
+                                                        chosen,
+                                                        email,
+                                                    }
+                                                    `);
+
+export const PLAYER_BY_GITHUB_ID_QUERY_ROOM_ID = defineQuery(`
+                                                        *[_type == "player" && email == $email][0]{
+                                                         _id,
+                                                        room 
+                                                        }
+                                                        `);
+
+export const ROOM_THURUMPU_CREATED_OWNER = defineQuery(`
+                                                            *[_type == "room" && _id == $id ][0]{
+                                                                thurumpu,
+           _createdAt   ,
+           email                       
+                                                            }
+                                                            `);
+
+
+export const ROOM_CHOOSER_ONLY = defineQuery(`
+                                                                *[_type == "room" && _id == $id ][0]{
+                                                                    chooser
+                                                                }
+                                                                `);
+
+
+
+export const PLAYER_BY_GITHUB_ID_QUERY_CARDS = defineQuery(`
+                                                                    *[_type == "player" && email == $email][0]{
+                cards
+                                                                    }
+                                                                    `);

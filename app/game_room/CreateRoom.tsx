@@ -28,7 +28,7 @@ import { redirect } from 'next/dist/server/api-utils';
 import { useRouter } from 'next/router';
 
 
-const CreateRoom = ({ room }: { room: string }) => {
+const CreateRoom = () => {
     const [created, setCreated] = useState("");
     const [payment, setPayment] = useState("");
 
@@ -52,14 +52,14 @@ const CreateRoom = ({ room }: { room: string }) => {
             //console.log(result)
             if (result.status == "CANCELED") {
                 setCreated("")
-                window.location.reload()
+
                 toast.success('Canceled room successfully...')
 
             }
             if (result.status == "SUCCESS") {
                 toast.success('Created room successfully....')
                 setCreated(result._id)
-                window.location.reload()
+
 
             }
             // else {
@@ -128,11 +128,11 @@ const CreateRoom = ({ room }: { room: string }) => {
                                 </SelectContent>
                             </Select>
                         </div> */}
-                        <input name="cancel" type="text" hidden readOnly value={room} />
-                        {(room) ? <Button type='submit' variant={'destructive'} disabled={isPendingCreate}>cancel</Button> :
+                        <input name="cancel" type="text" hidden readOnly value='' />
+                        {/* {(room || created) ? <Button type='submit' variant={'destructive'} disabled={isPendingCreate}>cancel</Button> : */}
 
-                            <Button type='submit' disabled={isPendingCreate}>Make</Button>
-                        }
+                        <Button type='submit' disabled={isPendingCreate}>Make</Button>
+
 
 
                     </div>
