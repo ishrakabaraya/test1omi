@@ -40,14 +40,12 @@ export const cardNameSet = async (
 
 
 
-    const { cardName, timer } = Object.fromEntries(form) as { cardName: string, timer: string };
+    const { cardName } = Object.fromEntries(form) as { cardName: string, timer: string };
     // console.log(cardName)
     // console.log(roomCards)
 
     try {
-        console.log('timer')
-        console.log(timer)
-        if ((chooser != email) && timer == "true") {
+        if (chooser != email) {
             return parseServerActionResponse({
                 error: "not your turn",
                 status: "ERROR",
@@ -286,3 +284,33 @@ export const cardListPlayer = async (room: string, email: string) => {
 
 
 
+export const MessageSent = async (
+    room: string,
+    email: string,
+    form: FormData,
+) => {
+
+    const { message } = Object.fromEntries(form) as { message: string };
+
+    console.log("room ")
+    console.log(room)
+    console.log("email ")
+    console.log(email)
+    await writeClient
+        .patch(room)
+        .set({
+            message: {
+                email: email,
+                message: message
+            }
+        })
+        .commit()
+
+
+
+    return parseServerActionResponse({
+        error: "",
+        status: "SUCCESS",
+    });
+
+}

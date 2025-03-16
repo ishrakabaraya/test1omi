@@ -54,6 +54,22 @@ export const room = defineType({
             name: 'team2',
             title: 'Team2',
             type: 'number',
+        }, {
+            name: 'message',
+            type: 'object',
+            title: 'Message',
+            fields: [
+                {
+                    name: 'email',
+                    type: 'string',
+                    title: 'Email',
+                },
+                {
+                    name: 'message',
+                    type: 'string',
+                    title: 'Message',
+                },
+            ],
         },
         {
             name: 'buffer',

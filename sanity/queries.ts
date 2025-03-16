@@ -153,3 +153,11 @@ export const PLAYER_BY_GITHUB_ID_QUERY_CARDS = defineQuery(`
                 cards
                                                                     }
                                                                     `);
+
+
+
+export const ROOM_MESSAGE_ONLY = defineQuery(`
+    *[_type == "room" && _id == $id ][0]{
+        message
+    }
+    `);

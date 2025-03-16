@@ -3,7 +3,7 @@ import CardContainer from '@/components/CardContainer';
 import CardDrawer from './CardDrawer';
 import { List } from './List';
 import { sanityFetch, SanityLive } from '@/sanity/lib/live';
-import { PLAYER_BY_GITHUB_ID_QUERY_CARDS, PLAYER_BY_GITHUB_ID_QUERY_ROOM_ONLY, ROOM_CARDS, ROOM_CHOOSER_ONLY, ROOM_THURUMPU_CREATED_OWNER, ROOM_THURUMPU_ONLY } from '@/sanity/queries';
+import { PLAYER_BY_GITHUB_ID_QUERY_CARDS, PLAYER_BY_GITHUB_ID_QUERY_ROOM_ONLY, ROOM_CARDS, ROOM_CHOOSER_ONLY, ROOM_MESSAGE_ONLY, ROOM_THURUMPU_CREATED_OWNER, ROOM_THURUMPU_ONLY } from '@/sanity/queries';
 import { cardListPlayer, cardNameSet, roomCardsLive } from './roomActions';
 import { auth } from '@/auth';
 import { parseServerActionResponse } from '@/lib/utils';
@@ -12,6 +12,9 @@ import CardsHand from './CardsHand';
 import { client } from '@/sanity/client';
 import { Club, Diamond, Heart, Spade } from 'lucide-react';
 import { writeClient } from '@/sanity/write-client';
+import MessageBox from './MessageBox';
+import ToastMessage from './ToastMessage';
+
 
 
 
@@ -34,7 +37,6 @@ const page = async () => {
 
 
     let thurump = ''
-    let owner = ''
 
     try {
         const { thurumpu, _createdAt, email: ownerEmail } = await client.withConfig({ useCdn: false })
@@ -43,13 +45,12 @@ const page = async () => {
         if (!thurumpu)
             redirect('/game_room')
         thurump = thurumpu
-        owner = ownerEmail
 
         const createdAt = new Date(_createdAt);
         const currentTime = new Date();
         const timeDifference = Math.floor((currentTime.getTime() - createdAt.getTime()) / 60000); // Convert milliseconds to minutes
 
-        if (timeDifference > 10) {
+        if (timeDifference > 60) {
 
             await writeClient.delete(room as string)
 
@@ -162,7 +163,11 @@ const page = async () => {
     //     randomCard()
     // }
 
-
+    const { data: message } = await sanityFetch({
+        query: ROOM_MESSAGE_ONLY, params: {
+            id: room
+        }
+    })
 
     return (
 
@@ -206,7 +211,9 @@ const page = async () => {
                 <div className='text-red-600 fixed top-[5vw] right-[5vw] bg-white p-[2vw] rounded-full'>{LiveCards.team2}</div>
             }
 
+            <MessageBox room={room} email={email || ''} />
 
+            <ToastMessage message={message.message} />
             <SanityLive />
 
         </div>

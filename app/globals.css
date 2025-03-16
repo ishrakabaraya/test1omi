@@ -380,6 +380,14 @@
     }
   }
 
+
+  .messageShade {
+    opacity: 1;
+    transition: 4s;
+  }
+
+
+
   /* @keyframes floor_anim {
     from {
       transform: translateX(-50%) translateY(-50%);
