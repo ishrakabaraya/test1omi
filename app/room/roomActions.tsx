@@ -112,7 +112,7 @@ export const cardNameSet = async (
                     .commit()
             }
 
-            if ((team1 + team2) == 7) {
+            if (team1 > 3 || team2 > 3) {
                 await writeClient.delete(room as string)
             }
 
